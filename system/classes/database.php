@@ -26,17 +26,12 @@ class database {
     }
 
     public function Query($qry, $params = []){
-      
+       $this->result = $this->con->prepare($qry);
        if(empty($params)){
-
-        $this->result = $this->con->prepare($qry);
         return $this->result->execute();
-
        } else {
-           $this->result = $this->con->prepare($qry);
-           return $this->result->execute($params);
+        return $this->result->execute($params);
        }
-
     }
 
     public function rowCount(){

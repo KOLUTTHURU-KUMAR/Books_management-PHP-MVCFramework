@@ -5,19 +5,16 @@ class profile extends framework {
     public function __construct()
     {
       if(!$this->getSession('userId')){
-
         $this->redirect("accountController/loginForm");
-
       }
        $this->helper("link");
        $this->profileModel = $this->model("profileModel"); 
     }
+
     public function index(){
      $userId = $this->getSession('userId');
       $data = $this->profileModel->getData($userId);
- 
       $this->view("profile", $data);
-
     }
 
     public function fruitForm(){
@@ -25,7 +22,6 @@ class profile extends framework {
     }
 
     public function fruitStore(){
-      
         $fruitData = [
        'name'           => $this->input('name'),
        'price'          => $this->input('price'),
@@ -55,23 +51,23 @@ class profile extends framework {
         $fruitData['colorError'] = "Color is required";
       }
 
-      if(empty($fruitData['nameError']) && empty($fruitData['priceError']) && empty($fruitData['sizeError']) && empty($fruitData['materialError']) && empty($fruitData['colorError']) ){
+      if(empty($fruitData['nameError']) && empty($fruitData['priceError']) && empty($fruitData['sizeError']) && empty($fruitData['materialError']) && empty($fruitData['colorError'])) {
 
-        [$fruitData['name'], $fruitData['price'], $fruitData['size'], $fruitData['material'], $fruitData['color'], $this->getSession('userId')];
-         if($this->profileModel->addFruit($data)){
-                $this->setFlash("fruitAdded", "Your fruit has been added successfuly");
-                $this->redirect("profile/index");
+        $currentUser =  $this->getSession('userId');
+        $data = [$fruitData['name'], $fruitData['price'], $fruitData['size'], $fruitData['material'], $fruitData['color'], $currentUser];
+        if($this->profileModel->addFruit($data)) {
+            //echo "Hello I am working";
+            $this->setFlash("fruitAdded", "Your fruit has been added successfuly");
+            $this->redirect("profile/index");
+        }
          }
-
-
-      } else {
+      else {
         $this->view("addFruit", $fruitData);
       }
-
     }
 
     public function edit_fruit($id){
-      
+    
       $userId = $this->getSession('userId');
       $fruitEdit = $this->profileModel->edit_data($id, $userId);
       $data = [
@@ -88,7 +84,7 @@ class profile extends framework {
 
     public function updateFruit(){
 
-$id = $this->input('hiddenId');
+      $id = $this->input('hiddenId');
       $userId = $this->getSession('userId');
       $fruitEdit = $this->profileModel->edit_data($id, $userId);
       $fruitData = [

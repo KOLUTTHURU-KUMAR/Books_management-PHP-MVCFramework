@@ -3,7 +3,7 @@
 class profileModel extends database {
 
     public function addFruit($fruit){
-        if($this->Query("INSERT INTO clothes VALUES (?,?,?,?,?,?)", $fruit)){
+        if($this->Query("INSERT INTO clothes (name, price, size, material, color, userId) VALUES (?,?,?,?,?,?)", $fruit)){
             return true;
         }
     }
